@@ -1,74 +1,108 @@
 #include <iostream>
 #include <string>
 using namespace std;
-// Abstract class
-class Shape
+
+// Base class: Employee
+class Employee
 {
-public:
-    // Pure virtual function (makes this class abstract)
-    virtual void area() = 0;
-    // Another pure virtual function
-    virtual void perimeter() = 0;
-};
-// Derived class: Rectangle
-class Rectangle : public Shape
-{
-private:
-    float length, width;
+protected:
+int empId;
+string empName;
+float basicSalary;
 
 public:
-    // Function to accept rectangle dimensions
-    void getData()
-    {
-        cout << "Enter length of rectangle: ";
-        cin >> length;
-        cout << "Enter width of rectangle: ";
-        cin >> width;
-    }
-    // Override pure virtual function to calculate area
-    void area()
-    {
-        cout << "Area of rectangle = " << length * width << endl;
-    }
-    // Override pure virtual function to calculate perimeter
-    void perimeter()
-    {
-        cout << "Perimeter of rectangle = " << 2 * (length + width) << endl;
-    }
-};
-// Derived class: Circle
-class Circle : public Shape
+
+void getEmployeeInfo()
 {
-private:
-    float radius;
+cout << "Enter Employee ID: ";
+cin >> empId;
+cin.ignore();
+cout << "Enter Employee Name: ";
+getline(cin, empName);
+cout << "Enter Basic Salary: ";
+cin >> basicSalary;
+}
+};
+
+// Derived class (Multilevel): Department
+class Department : public Employee
+{
+protected:
+string deptName;
 
 public:
-    void getData()
-    {
-        cout << "Enter radius of circle: ";
-        cin >> radius;
-    }
-    void area()
-    {
-        cout << "Area of circle = " << 3.1416 * radius * radius << endl;
-    }
-    void perimeter()
-    {
-        cout << "Perimeter (Circumference) of circle = " << 2 * 3.1416 * radius << endl;
-    }
+void getDepartmentInfo()
+{
+cin.ignore();
+cout << "Enter Department Name: ";
+getline(cin, deptName);
+}
 };
+
+// Derived class (Multilevel): PF (from Department)
+
+class PF : public Department
+{
+protected:
+float pfAmount;
+
+public:
+void calculatePF()
+{
+pfAmount = basicSalary * 0.12; // 12% of basic salary
+}
+
+void displayPFInfo()
+{
+cout << "\n--- Employee Details (Multilevel Inheritance) ---\n";
+cout << "Employee ID : " << empId << endl;
+cout << "Employee Name : " << empName << endl;
+cout << "Department : " << deptName << endl;
+cout << "Basic Salary : " << basicSalary << endl;
+cout << "PF Amount (12%) : " << pfAmount << endl;
+}
+};
+
+// Another Derived class (Hierarchical) from Employee
+class Project : public Employee
+{
+protected:
+string projectName;
+
+public:
+void getProjectInfo()
+{
+cin.ignore();
+cout << "Enter Project Name: ";
+getline(cin, projectName);
+}
+
+void displayProjectInfo()
+{
+cout << "\n--- Employee Project Info (Hierarchical Inheritance) ---\n";
+cout << "Employee ID : " << empId << endl;
+cout << "Employee Name : " << empName << endl;
+cout << "Project Name : " << projectName << endl;
+}
+};
+
 // Main function
 int main()
 {
-    Rectangle rect;
-    Circle circ;
-    cout << "--- Rectangle ---\n";
-    rect.getData();
-    rect.area();
-    rect.perimeter();
-    cout << "\n--- Circle ---\n";
-    circ.getData();
-    circ.area();
-    circ.perimeter();
-    return 0;
+// Object for multilevel inheritance
+PF emp1;
+cout << "--- Enter Employee Info for PF ---\n";
+emp1.getEmployeeInfo();
+emp1.getDepartmentInfo();
+emp1.calculatePF();
+emp1.displayPFInfo();
+
+// Object for hierarchical inheritance
+Project emp2;
+cout << "\n--- Enter Employee Info for Project ---\n";
+emp2.getEmployeeInfo();
+emp2.getProjectInfo();
+emp2.displayProjectInfo();
+
+return 0;
 }
